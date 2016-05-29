@@ -58,7 +58,7 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
     print(trialResults)
     pylab.hist(trialResults, bins, label = "Total Virus Population")
     
-    pylab.title("Simulation of Virus Population Growth with Drug Treatment ("+str(delay)+" delay)")
+    pylab.title("Simulation of Virus Population Growth with Drug Treatment ("+str(clearProb)+" clearProb)")
     pylab.xlabel("Population [#]")
     pylab.ylabel("# of Occurrences")
     pylab.legend()
@@ -66,9 +66,18 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
 
 bins = 20
 numTrials = 100
-for delay in [300, 150, 75, 0]:
-    simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay, bins)
+#~ for delay in [300, 150, 75, 0]:
+    #~ simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay, bins)
+#~ for numViruses in [100, 200, 300, 400]:
+    #~ simulationDelayedTreatment(numViruses, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, 150, bins)
+#~ for maxPop in [1000,1500,2000,2500]:
+    #~ simulationDelayedTreatment(100, maxPop, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, 150, bins)
+#~ for maxBirthProb in [0.1, 0.2, 0.3, 0.4]:
+    #~ simulationDelayedTreatment(100, 1000, maxBirthProb, 0.05, {"guttagonol": False}, 0.005, numTrials, 150, bins)
+#~ for clearProb in [0.05, 0.15, 0.25, 0.35]:
+    #~ simulationDelayedTreatment(100, 1000, 0.1, clearProb, {"guttagonol": False}, 0.005, numTrials, 150, bins)
 
+simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": True}, 0.005, numTrials, 150, bins)
 #
 # PROBLEM 2
 #
