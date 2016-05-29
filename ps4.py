@@ -36,9 +36,7 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
     assert numTrials <= 100, "numTrials cannot exceed 100"
     
     trialResults = []
-    trialAverages = []
     resistTrialResults = []
-    resistTrialAverages = []
     virusMaster = []
     
     for i in range(numViruses):
@@ -46,33 +44,22 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
     
     for i in range(numTrials):
         viruses = virusMaster[:]      
-        stepResults = []
-        resistStepResults = []
         thisPatient = TreatedPatient(viruses, maxPop)
         for j in range(delay):
             thisPatient.update()
-            stepResults.append(float(thisPatient.getTotalPop()))
-            resistStepResults.append(float(thisPatient.getResistPop(['guttagonol'])))
             
         thisPatient.addPrescription('guttagonol')
         for j in range(150):
             thisPatient.update()
-            stepResults.append(float(thisPatient.getTotalPop()))
-            resistStepResults.append(float(thisPatient.getResistPop(['guttagonol'])))
-        trialResults.append(stepResults[:])
-        resistTrialResults.append(resistStepResults[:])
+
+        finalPop = float(thisPatient.getTotalPop())
+        resistFinalPop = float(thisPatient.getResistPop(['guttagonol']))
         
-    for i in range(delay + 150):
-        trialAverages.append(0)
-        resistTrialAverages.append(0)
-        for trial in trialResults:
-            trialAverages[i] += trial[i]
-        for trial in resistTrialResults:
-            resistTrialAverages[i] += trial[i]
-        trialAverages[i] = trialAverages[i] / numTrials
-        resistTrialAverages[i] = resistTrialAverages[i] / numTrials
-    pylab.plot(trialAverages, "ro", label = "Total Virus Population")
-    pylab.plot(resistTrialAverages, "bo", label = "Drug-resistant Virus Population")
+        trialResults.append(finalPop)
+        resistTrialResults.append(resistFinalPop)
+        
+    pylab.hist(trialResults, "ro", label = "Total Virus Population")
+    pylab.hist(resistTrialResults, "bo", label = "Drug-resistant Virus Population")
     
     pylab.title("Simulation of Virus Population Growth with Drug Treatment ("+str(delay)+" delay)")
     pylab.xlabel("Number of Elapsed Time Steps")
@@ -80,13 +67,10 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
     pylab.legend()
     pylab.show()
 
-    for delay in delayList:
-        simulationWithDrug(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay)
 
-
-
+numTrials = 1
 for delay in [300, 150, 75, 0]:
-    simulationDelayedTreatment(1, delay)
+    simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay)
 
 #
 # PROBLEM 2
