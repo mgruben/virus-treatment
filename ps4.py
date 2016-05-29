@@ -9,7 +9,7 @@ from ps3b import *
 # PROBLEM 1
 #        
 def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resistances,
-                               mutProb, numTrials, delay=150):
+                               mutProb, numTrials, delay=150, bins = 10):
     """
     Runs simulations and make histograms for problem 1.
 
@@ -36,7 +36,6 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
     assert numTrials <= 100, "numTrials cannot exceed 100"
     
     trialResults = []
-    resistTrialResults = []
     virusMaster = []
     
     for i in range(numViruses):
@@ -53,14 +52,11 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
             thisPatient.update()
 
         finalPop = float(thisPatient.getTotalPop())
-        resistFinalPop = float(thisPatient.getResistPop(['guttagonol']))
         
         trialResults.append(finalPop)
-        resistTrialResults.append(resistFinalPop)
     
-    print(trialResults, resistTrialResults)
-    pylab.hist(trialResults, bins = 10, label = "Total Virus Population")
-    pylab.hist(resistTrialResults, bins = 10, label = "Drug-resistant Virus Population")
+    print(trialResults)
+    pylab.hist(trialResults, bins, label = "Total Virus Population")
     
     pylab.title("Simulation of Virus Population Growth with Drug Treatment ("+str(delay)+" delay)")
     pylab.xlabel("Population [#]")
@@ -68,10 +64,10 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
     pylab.legend()
     pylab.show()
 
-
+bins = 20
 numTrials = 100
 for delay in [300, 150, 75, 0]:
-    simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay)
+    simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay, bins)
 
 #
 # PROBLEM 2
