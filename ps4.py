@@ -23,7 +23,7 @@ def simulationDelayedTreatment(numTrials, delayList):
     """
     
     for delay in delayList:
-        simulationWithDrug(1, 20, 1.0, 0.0, {"guttagonol": True}, 1.0, numTrials)
+        simulationWithDrug(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay)
 
 
 
