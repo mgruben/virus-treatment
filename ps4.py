@@ -66,6 +66,7 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
 
 bins = 20
 numTrials = 100
+
 #~ for delay in [300, 150, 75, 0]:
     #~ simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay, bins)
 #~ for numViruses in [100, 200, 300, 400]:
@@ -77,11 +78,12 @@ numTrials = 100
 #~ for clearProb in [0.05, 0.15, 0.25, 0.35]:
     #~ simulationDelayedTreatment(100, 1000, 0.1, clearProb, {"guttagonol": False}, 0.005, numTrials, 150, bins)
 
-simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": True}, 0.005, numTrials, 150, bins)
+#~ simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": True}, 0.005, numTrials, 150, bins)
 #
 # PROBLEM 2
 #
-def simulationTwoDrugsDelayedTreatment(numTrials):
+def simulationTwoDrugsDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resistances,
+                               mutProb, numTrials, delay=150, bins = 10):
     """
     Runs simulations and make histograms for problem 2.
 
@@ -94,4 +96,49 @@ def simulationTwoDrugsDelayedTreatment(numTrials):
 
     numTrials: number of simulation runs to execute (an integer)
     """
-    # TODO
+    assert type(numViruses) == int, "numViruses must be an integer"
+    assert numViruses > 0, "numViruses must be positive"
+    assert type(maxPop) == int, "maxPop must be an integer"
+    assert maxPop > 0, "maxPop must be positive"
+    assert 0 <= maxBirthProb <= 1, "maxBirthProb must be between 0 and 1"
+    assert 0 <= clearProb <= 1, "clearProb must be between 0 and 1"
+    assert type(numTrials) == int, "numTrials must be an integer"
+    assert type(resistances) == dict, "resistances must be a dictionary"
+    assert 0 <= mutProb <= 1, "mutProb must be positive"
+    assert numTrials > 0, "numTrials must be positive"
+    assert numTrials <= 100, "numTrials cannot exceed 100"
+    
+    trialResults = []
+    virusMaster = []
+    
+    for i in range(numViruses):
+        virusMaster.append(ResistantVirus(maxBirthProb, clearProb, resistances, mutProb))
+    
+    for i in range(numTrials):
+        viruses = virusMaster[:]      
+        thisPatient = TreatedPatient(viruses, maxPop)
+        for j in range(150):
+            thisPatient.update()
+        
+        thisPatient.addPrescription('guttagonol')
+        for j in range(delay):
+            thisPatient.update()
+            
+        thisPatient.addPrescription('grimpex')
+        for j in range(150):
+            thisPatient.update()
+
+        finalPop = float(thisPatient.getTotalPop())
+        
+        trialResults.append(finalPop)
+    
+    print(trialResults)
+    pylab.hist(trialResults, bins, label = "Total Virus Population")
+    
+    pylab.title("Simulation of Virus Population Growth with Drug Treatment")
+    pylab.xlabel("Population [#]")
+    pylab.ylabel("# of Occurrences")
+    pylab.legend()
+    pylab.show()
+
+simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False, "grimpex": False}, 0.005, numTrials, 150, bins)
