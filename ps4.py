@@ -57,18 +57,19 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
         
         trialResults.append(finalPop)
         resistTrialResults.append(resistFinalPop)
-        
-    pylab.hist(trialResults, "ro", label = "Total Virus Population")
-    pylab.hist(resistTrialResults, "bo", label = "Drug-resistant Virus Population")
+    
+    print(trialResults, resistTrialResults)
+    pylab.hist(trialResults, bins = 10, label = "Total Virus Population")
+    pylab.hist(resistTrialResults, bins = 10, label = "Drug-resistant Virus Population")
     
     pylab.title("Simulation of Virus Population Growth with Drug Treatment ("+str(delay)+" delay)")
-    pylab.xlabel("Number of Elapsed Time Steps")
-    pylab.ylabel("Average Size of Virus Population")
+    pylab.xlabel("Population [#]")
+    pylab.ylabel("# of Occurrences")
     pylab.legend()
     pylab.show()
 
 
-numTrials = 1
+numTrials = 100
 for delay in [300, 150, 75, 0]:
     simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay)
 
