@@ -117,28 +117,29 @@ def simulationTwoDrugsDelayedTreatment(numViruses, maxPop, maxBirthProb, clearPr
     for i in range(numTrials):
         viruses = virusMaster[:]      
         thisPatient = TreatedPatient(viruses, maxPop)
-        for j in range(150):
+        for j in range(150): # First stage, before any treatment
             thisPatient.update()
         
-        thisPatient.addPrescription('guttagonol')
-        for j in range(delay):
+        thisPatient.addPrescription('guttagonol') # Second stage, first treatment
+        for j in range(delay): # separated by variable delay
             thisPatient.update()
             
-        thisPatient.addPrescription('grimpex')
-        for j in range(150):
+        thisPatient.addPrescription('grimpex') #Third stage, second and final treatment
+        for j in range(150): # allow time for virus population to rebound
             thisPatient.update()
 
         finalPop = float(thisPatient.getTotalPop())
         
         trialResults.append(finalPop)
     
-    print(trialResults)
+    print(trialResults) # Primarily to be able to examine the data more easily from terminal
     pylab.hist(trialResults, bins, label = "Total Virus Population")
     
-    pylab.title("Simulation of Virus Population Growth with Drug Treatment")
+    pylab.title("Simulation of Virus Population Growth with Drug Treatment, delay="+str(delay))
     pylab.xlabel("Population [#]")
     pylab.ylabel("# of Occurrences")
     pylab.legend()
     pylab.show()
 
-simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False, "grimpex": False}, 0.005, numTrials, 150, bins)
+for delay in [300,150,75,0]:
+    simulationTwoDrugsDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False, "grimpex": False}, 0.005, numTrials, delay, bins)
