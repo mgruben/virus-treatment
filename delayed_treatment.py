@@ -3,7 +3,7 @@
 import numpy
 import random
 import pylab
-from ps3b import *
+from virus_growth import *
 
 #
 # PROBLEM 1
@@ -64,8 +64,6 @@ def simulationDelayedTreatment(numViruses, maxPop, maxBirthProb, clearProb, resi
     pylab.legend()
     pylab.show()
 
-bins = 20
-numTrials = 100
 
 #~ for delay in [300, 150, 75, 0]:
     #~ simulationDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False}, 0.005, numTrials, delay, bins)
@@ -141,5 +139,12 @@ def simulationTwoDrugsDelayedTreatment(numViruses, maxPop, maxBirthProb, clearPr
     pylab.legend()
     pylab.show()
 
-for delay in [300,150,75,0]:
-    simulationTwoDrugsDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False, "grimpex": False}, 0.005, numTrials, delay, bins)
+def test():
+    # Warning, this takes tens of minutes between graphs
+    bins = 20
+    numTrials = 100
+    for delay in [300,150,75,0]:
+        simulationTwoDrugsDelayedTreatment(100, 1000, 0.1, 0.05, {"guttagonol": False, "grimpex": False}, 0.005, numTrials, delay, bins)
+
+if __name__=="__main__":
+    test()
